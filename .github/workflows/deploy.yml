@@ -25,16 +25,16 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t asia-northeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/my-repo/my-app:latest .
+          docker build -t asia-northeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/my-repo:latest .
 
       - name: Push Docker image
         run: |
-          docker push asia-northeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/my-repo/my-app:latest
+          docker push asia-northeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/my-repo:latest
 
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy my-app \
-            --image asia-northeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/my-repo/my-app:latest \
+            --image asia-northeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/my-repo:latest \
             --region asia-northeast1 \
             --platform managed \
             --allow-unauthenticated
