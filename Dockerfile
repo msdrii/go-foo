@@ -1,26 +1,21 @@
-# Start with a base Go image
-FROM golang:1.18 as builder
+# ベースイメージを指定
+FROM golang:1.17-alpine
 
-# Set the Current Working Directory inside the container
+# 作業ディレクトリを作成
 WORKDIR /app
 
-# Copy go mod and sum files
-COPY go.mod go.sum ./
+# go.mod と go.sum をコピー
+COPY go.mod ./
+COPY go.sum ./
 
-# Download all dependencies. Dependencies will be cached if the go.mod and go.sum files are not changed
+# 依存関係をダウンロード
 RUN go mod download
 
-# Copy the source from the current directory to the Working Directory inside the container
+# 残りのソースコードをコピー
 COPY . .
 
-# Build the Go app
-RUN go build -o main .
+# アプリケーションをビルド
+RUN go build -o /myapp
 
-# Start a new stage from scratch
-FROM gcr.io/distroless/base-debian10
-
-# Copy the Pre-built binary file from the previous stage
-COPY --from=builder /app/main /main
-
-# Command to run the executable
-CMD ["/main"]
+# コンテナ起動時に実行するコマンドを指定
+CMD ["/myapp"]
