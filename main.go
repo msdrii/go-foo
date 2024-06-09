@@ -1,19 +1,19 @@
 package main
 
 import (
-	"fmt"
-	"log"
 	"net/http"
+	"github.com/labstack/echo/v4"
 )
 
-func helloHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello, World!")
-}
-
 func main() {
-	http.HandleFunc("/", helloHandler)
-	log.Println("Starting server on :8080")
-	if err := http.ListenAndServe(":8080", nil); err != nil {
-		log.Fatalf("could not start server: %v\n", err)
-	}
+	// Echoのインスタンスを作成
+	e := echo.New()
+
+	// ルートパスにアクセスがあった場合の処理
+	e.GET("/", func(c echo.Context) error {
+		return c.String(http.StatusOK, "Hello, Echo!")
+	})
+
+	// サーバーを開始
+	e.Start(":8080")
 }
